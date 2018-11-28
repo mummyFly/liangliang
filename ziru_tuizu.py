@@ -3,21 +3,21 @@ from urllib import request
 from bs4 import BeautifulSoup
 
 if __name__ == "__main__":
-    house_pages_air = ["61893689", "61919063"]
-    dingding_house_status = "已检测"
+    house_pages_tuizu = ["194833",]
+    dingding_house_status = "tzpzz"
     i = 0
     while True:
-        if i == house_pages_air.__len__():
+        if i == house_pages_tuizu.__len__():
             i = 0
-        house_page = house_pages_air[i]
+        house_page = house_pages_tuizu[i]
         i = i + 1
-        dingding_msg = "空气检测房屋可预定："
+        dingding_msg = "退租房屋可预定："
         try:
             dingding_flag = False
             try:
                 ziru_url = "http://www.ziroom.com/z/vr/" + house_page + ".html"
                 print("\n房源page：" + ziru_url)
-                dingding_msg += "房源page："+ziru_url
+                dingding_msg += "房源page：" + ziru_url
                 ziru_head = {
                     'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                                   "Chrome/70.0.3538.102 Safari/537.36"}
@@ -32,7 +32,7 @@ if __name__ == "__main__":
                 room_name = ziru_soup.find('div', class_="room_name").h2.get_text()
                 room_name = room_name.strip()
                 print("房源名称：" + room_name)
-                dingding_msg += "\n房源名称："+room_name
+                dingding_msg += "\n房源名称：" + room_name
                 ziru_divs = ziru_soup.find("input", id="house_id")
                 # print(divs)
                 house_id = ziru_divs['value']
@@ -47,18 +47,13 @@ if __name__ == "__main__":
                 ziru_json = ziru_resp2.read()
                 ziru_jsonStr = json.loads(ziru_json, encoding="utf-8")
                 # print(jsonStr)
-                air_status = ziru_jsonStr['data']['air_part']['air_quality']['show_info']['status']
-                house_status = ziru_jsonStr['data']['air_part']['vanancy']['status']
-                print("房源空检状态：" + air_status)
-                dingding_msg += "\n房源空检状态：" + air_status
-                if dingding_house_status in air_status:
+                print("退租房屋配置状态："+ziru_jsonStr['data']['status'])
+                dingding_msg += "\n退租房屋配置状态："+ziru_jsonStr['data']['status']
+                if ziru_jsonStr['data']['status'] != 'tzpzz':
                     dingding_flag = True
-                print("房源预定状态：" + house_status)
-                dingding_msg += "\n房源预定状态：" + house_status
 
             except Exception as e:
                 print("获取房源信息时出错,", e)
-
 
             if dingding_flag:
                 dingding_req_json = {
