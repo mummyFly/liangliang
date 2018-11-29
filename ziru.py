@@ -3,7 +3,7 @@ from urllib import request
 from bs4 import BeautifulSoup
 
 if __name__ == "__main__":
-    house_pages_air = ["61893689", "61919063"]
+    house_pages_air = ["61893689", "61919063","61875697","61823552"]
     dingding_house_status = "已检测"
     i = 0
     while True:
@@ -78,6 +78,6 @@ if __name__ == "__main__":
                 dingding_result = dingding_resp.read()
                 print(dingding_result)
 
-            time.sleep(3)
+            time.sleep(100)
         except Exception as e:
             print("程序执行出错，房源pageid：" + house_page + ",", e)
